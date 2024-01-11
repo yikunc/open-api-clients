@@ -4,9 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-
+    "download:jar": "mkdir node_modules/vendor && curl https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/2.4.39/swagger-codegen-cli-2.4.39.jar > node_modules/vendor/swagger-codegen-cli.jar",
+    "gen:doc:web:github": "swagger-codegen-cli generate -i src/clients/github/openapi.yml -l html -o build/clients/github11",
+    "gen:doc:web:github2": "redoc-cli bundle -o build/clients/github/index.html src/clients/github/openapi.yml"
   },
   "keywords": [],
   "author": "Yikun Chen<yikunc90@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "swagger-codegen-cli": "^2.2.3"
+  },
+  "dependencies": {
+    "redoc-cli": "^0.13.21"
+  }
 }
