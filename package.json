@@ -1,0 +1,12 @@
+{
+  "name": "open-api-clients",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+
+  },
+  "keywords": [],
+  "author": "Yikun Chen<yikunc90@gmail.com>",
+  "license": "ISC"
+}

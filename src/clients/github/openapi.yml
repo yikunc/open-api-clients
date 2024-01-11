@@ -1,0 +1,117 @@
+openapi: 3.0.3
+info:
+  title: Github Open API
+  description: |-
+    This is based on the [GitHub REST API documentation](https://docs.github.com/en/rest?apiVersion=2022-11-28)
+  version: 0.0.1
+servers:
+  - url: https://api.github.com
+tags:
+  - name: Repositories
+    description: Use the REST API to manage repositories on GitHub.
+paths:
+  /users/{username}/repos:
+    get:
+      tags:
+        - Repositories
+      summary: List repositories for a user
+      description: See [origin document](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user)
+      operationId: listUserRepositories
+      parameters:
+        - name: username
+          in: path
+          description: Github username
+          required: true
+          schema:
+            type: string
+            example: yikunc
+        - $ref: '#/components/parameters/apiVersion'
+        - $ref: '#/components/parameters/accept'
+        - name: type
+          in: query
+          description: Limit results to repositories of the specified type.
+          schema:
+            type: string
+            required: false
+            default: owner
+            enum:
+              - all
+              - owner
+              - member
+        - name: sort
+          in: query
+          description: The property to sort the results by.
+          schema:
+            type: string
+            required: false
+            default: full_name
+            enum:
+              - created
+              - updated
+              - pushed
+              - full_name
+        - name: direction
+          in: query
+          description: The order to sort by. Default to `asc` when using full_name, otherwise `desc`.
+          schema:
+            type: string
+            required: false
+            enum:
+              - asc
+              - desc
+        - name: per_page
+          in: query
+          description: The number of results per page (max 100). For more information, see [Using pagination in the REST API.](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)
+          schema:
+            type: integer
+            default: 30
+            maximum: 100
+        - name: page
+          in: query
+          description: The page number of the results to fetch. For more information, see [Using pagination in the REST API.](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)
+          schema:
+            type: integer
+            default: 1
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Repository'
+components:
+  schemas:
+    Repository:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        node_id:
+          type: string
+  parameters:
+    accept:
+      name: accept
+      in: header
+      schema:
+        type: string
+        example: application/vnd.github+json
+    apiVersion:
+      name: X-GitHub-Api-Version
+      in: header
+      example: 2022-11-28
+      required: true
+      description: API version
+      schema:
+        type: string
+        example: 2022-11-28
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+
